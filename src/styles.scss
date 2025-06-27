@@ -300,6 +300,109 @@ body {
 .w-full { width: 100%; }
 .text-base { font-size: 1rem; }
 
+/* Aspect ratio utilitaires */
+.aspect-square {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+}
+
+/* Fallback pour les navigateurs qui ne supportent pas aspect-ratio */
+@supports not (aspect-ratio: 1 / 1) {
+  .aspect-square {
+    position: relative;
+    width: 100%;
+  }
+  .aspect-square::before {
+    content: '';
+    display: block;
+    padding-bottom: 100%;
+  }
+  .aspect-square > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+/* Container des étapes */
+.steps-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Classes pour les étapes carrées */
+.step-card {
+  width: 200px;
+  height: 200px;
+  flex-shrink: 0;
+}
+
+/* Desktop : 4 étapes sur une ligne */
+@media (min-width: 1024px) {
+  .steps-container {
+    display: grid;
+    grid-template-columns: repeat(4, 300px);
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: start;
+  }
+  
+  .step-card {
+    width: 300px;
+    height: 300px;
+  }
+}
+
+/* Tablette : 2 étapes par ligne */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .steps-container {
+    display: grid;
+    grid-template-columns: repeat(2, 200px);
+    gap: 1.5rem;
+    justify-content: center;
+  }
+}
+
+/* Container des artisans du mois */
+.artisans-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Classes pour les cartes artisans */
+.artisan-card {
+  width: 280px;
+  height: 280px;
+  flex-shrink: 0;
+}
+
+/* Desktop : 3 artisans sur une ligne */
+@media (min-width: 1024px) {
+  .artisans-container {
+    display: grid;
+    grid-template-columns: repeat(3, 280px);
+    gap: 2rem;
+    justify-content: center;
+    align-items: start;
+  }
+}
+
+/* Tablette : 2 artisans par ligne ou 1 selon l'espace */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .artisans-container {
+    display: grid;
+    grid-template-columns: repeat(2, 280px);
+    gap: 1.5rem;
+    justify-content: center;
+  }
+}
+
 
 /* Classes d'animation */
 .max-h-0 { max-height: 0; }

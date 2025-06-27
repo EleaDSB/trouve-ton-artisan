@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { ArtisansService } from '../services/artisans.service';
+import { Artisan } from '../models/artisan.model';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +17,7 @@ import { RouterModule } from '@angular/router';
           <!-- Titre de la section -->
           <div class="text-center mb-16">
             <h2 class="text-4xl md:text-5xl font-bold text-text-dark mb-6">
-              Comment trouver mon artisan ?
+              Comment trouver ton artisan ?
             </h2>
             <p class="text-lg text-gray-600 max-w-2xl mx-auto">
               Trouvez l'artisan parfait en 4 étapes simples
@@ -23,39 +25,39 @@ import { RouterModule } from '@angular/router';
           </div>
 
           <!-- Grid des 4 étapes horizontales -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-16">
+          <div class="steps-container max-w-6xl mx-auto mb-16">
             
             <!-- Étape 1 -->
-            <div class="step-card bg-white rounded-lg p-6 text-center hover:shadow-lg transition-all duration-300">
-              <div class="step-number bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold mx-auto mb-4">
+            <div class="step-card bg-white rounded-lg p-4 text-center hover:shadow-lg transition-all duration-300 aspect-square flex flex-col justify-center">
+              <div class="step-number bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold mx-auto mb-2">
                 1
               </div>
-              <div class="step-icon mb-4">
+              <div class="step-icon mb-2">
                 <svg class="w-10 h-10 mx-auto text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
                 </svg>
               </div>
-              <div class="border-t border-gray-200 my-4"></div>
-              <h3 class="text-lg font-semibold text-text-dark mb-3">
+              <div class="border-t border-gray-200 my-2"></div>
+              <h3 class="text-md font-semibold text-text-dark mb-1">
                 Choisir la catégorie
               </h3>
               <p class="text-sm text-gray-600 leading-relaxed">
-                Choisir la catégorie d'artisanat dans le menu
+                Choisir la catégorie dans le menu
               </p>
             </div>
 
             <!-- Étape 2 -->
-            <div class="step-card bg-white rounded-lg p-6 text-center hover:shadow-lg transition-all duration-300">
-              <div class="step-number bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold mx-auto mb-4">
+            <div class="step-card bg-white rounded-lg p-4 text-center hover:shadow-lg transition-all duration-300 aspect-square flex flex-col justify-center">
+              <div class="step-number bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold mx-auto mb-2">
                 2
               </div>
-              <div class="step-icon mb-4">
+              <div class="step-icon mb-2">
                 <svg class="w-10 h-10 mx-auto text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                 </svg>
               </div>
-              <div class="border-t border-gray-200 my-4"></div>
-              <h3 class="text-lg font-semibold text-text-dark mb-3">
+              <div class="border-t border-gray-200 my-2"></div>
+              <h3 class="text-md font-semibold text-text-dark mb-1">
                 Choisir un artisan
               </h3>
               <p class="text-sm text-gray-600 leading-relaxed">
@@ -64,17 +66,17 @@ import { RouterModule } from '@angular/router';
             </div>
 
             <!-- Étape 3 -->
-            <div class="step-card bg-white rounded-lg p-6 text-center hover:shadow-lg transition-all duration-300">
-              <div class="step-number bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold mx-auto mb-4">
+            <div class="step-card bg-white rounded-lg p-4 text-center hover:shadow-lg transition-all duration-300 aspect-square flex flex-col justify-center">
+              <div class="step-number bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold mx-auto mb-2">
                 3
               </div>
-              <div class="step-icon mb-4">
+              <div class="step-icon mb-2">
                 <svg class="w-10 h-10 mx-auto text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                 </svg>
               </div>
-              <div class="border-t border-gray-200 my-4"></div>
-              <h3 class="text-lg font-semibold text-text-dark mb-3">
+              <div class="border-t border-gray-200 my-2"></div>
+              <h3 class="text-md font-semibold text-text-dark mb-1">
                 Le contacter
               </h3>
               <p class="text-sm text-gray-600 leading-relaxed">
@@ -83,17 +85,17 @@ import { RouterModule } from '@angular/router';
             </div>
 
             <!-- Étape 4 -->
-            <div class="step-card bg-white rounded-lg p-6 text-center hover:shadow-lg transition-all duration-300">
-              <div class="step-number bg-accent-green text-white w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold mx-auto mb-4">
+            <div class="step-card bg-white rounded-lg p-4 text-center hover:shadow-lg transition-all duration-300 aspect-square flex flex-col justify-center">
+              <div class="step-number bg-accent-green text-white w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold mx-auto mb-2">
                 4
               </div>
-              <div class="step-icon mb-4">
+              <div class="step-icon mb-2">
                 <svg class="w-10 h-10 mx-auto text-accent-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
               </div>
-              <div class="border-t border-gray-200 my-4"></div>
-              <h3 class="text-lg font-semibold text-text-dark mb-3">
+              <div class="border-t border-gray-200 my-2"></div>
+              <h3 class="text-md font-semibold text-text-dark mb-1">
                 Réponse sous 48h
               </h3>
               <p class="text-sm text-gray-600 leading-relaxed">
@@ -119,100 +121,100 @@ import { RouterModule } from '@angular/router';
           </div>
 
           <!-- Grid des 3 artisans -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div class="artisans-container max-w-6xl mx-auto">
             
             <!-- Artisan 1 -->
-            <div class="artisan-card bg-primary-light rounded-lg p-6 hover:shadow-xl transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-primary"
+            <div *ngIf="artisans[0]" class="artisan-card bg-primary-light rounded-lg p-6 hover:shadow-xl transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-primary aspect-square flex flex-col justify-center"
                  (click)="selectArtisan(artisans[0])">
               <div class="text-center mb-4">
-                <div class="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-3">
+                  <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                   </svg>
                 </div>
-                <h3 class="text-xl font-bold text-text-dark mb-2">{{ artisans[0].nom }}</h3>
+                <h3 class="text-lg font-bold text-text-dark mb-2">{{ artisans[0]?.nom }}</h3>
                 
                 <!-- Étoiles -->
                 <div class="flex justify-center mb-3">
                   <div class="flex space-x-1">
-                    <svg *ngFor="let star of getStars(artisans[0].note)" class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                    <svg *ngFor="let star of getStars(artisans[0]?.note || 0)" class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                     </svg>
                   </div>
-                  <span class="ml-2 text-sm text-gray-600">({{ artisans[0].note }}/5)</span>
+                  <span class="ml-2 text-sm text-gray-600">({{ artisans[0]?.note }}/5)</span>
                 </div>
                 
-                <p class="text-primary font-semibold mb-2">{{ artisans[0].specialite }}</p>
+                <p class="text-primary font-semibold mb-2">{{ artisans[0]?.specialite }}</p>
                 <p class="text-gray-600 text-sm flex items-center justify-center">
                   <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                   </svg>
-                  {{ artisans[0].localisation }}
+                  {{ artisans[0]?.ville }}
                 </p>
               </div>
             </div>
 
             <!-- Artisan 2 -->
-            <div class="artisan-card bg-primary-light rounded-lg p-6 hover:shadow-xl transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-primary"
+            <div *ngIf="artisans[1]" class="artisan-card bg-primary-light rounded-lg p-6 hover:shadow-xl transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-primary aspect-square flex flex-col justify-center"
                  (click)="selectArtisan(artisans[1])">
               <div class="text-center mb-4">
-                <div class="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-3">
+                  <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                   </svg>
                 </div>
-                <h3 class="text-xl font-bold text-text-dark mb-2">{{ artisans[1].nom }}</h3>
+                <h3 class="text-lg font-bold text-text-dark mb-2">{{ artisans[1]?.nom }}</h3>
                 
                 <!-- Étoiles -->
                 <div class="flex justify-center mb-3">
                   <div class="flex space-x-1">
-                    <svg *ngFor="let star of getStars(artisans[1].note)" class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                    <svg *ngFor="let star of getStars(artisans[1]?.note || 0)" class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                     </svg>
                   </div>
-                  <span class="ml-2 text-sm text-gray-600">({{ artisans[1].note }}/5)</span>
+                  <span class="ml-2 text-sm text-gray-600">({{ artisans[1]?.note }}/5)</span>
                 </div>
                 
-                <p class="text-primary font-semibold mb-2">{{ artisans[1].specialite }}</p>
+                <p class="text-primary font-semibold mb-2">{{ artisans[1]?.specialite }}</p>
                 <p class="text-gray-600 text-sm flex items-center justify-center">
                   <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                   </svg>
-                  {{ artisans[1].localisation }}
+                  {{ artisans[1]?.ville }}
                 </p>
               </div>
             </div>
 
             <!-- Artisan 3 -->
-            <div class="artisan-card bg-primary-light rounded-lg p-6 hover:shadow-xl transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-primary"
+            <div *ngIf="artisans[2]" class="artisan-card bg-primary-light rounded-lg p-6 hover:shadow-xl transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-primary aspect-square flex flex-col justify-center"
                  (click)="selectArtisan(artisans[2])">
               <div class="text-center mb-4">
-                <div class="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-3">
+                  <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                   </svg>
                 </div>
-                <h3 class="text-xl font-bold text-text-dark mb-2">{{ artisans[2].nom }}</h3>
+                <h3 class="text-lg font-bold text-text-dark mb-2">{{ artisans[2]?.nom }}</h3>
                 
                 <!-- Étoiles -->
                 <div class="flex justify-center mb-3">
                   <div class="flex space-x-1">
-                    <svg *ngFor="let star of getStars(artisans[2].note)" class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                    <svg *ngFor="let star of getStars(artisans[2]?.note || 0)" class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                     </svg>
                   </div>
-                  <span class="ml-2 text-sm text-gray-600">({{ artisans[2].note }}/5)</span>
+                  <span class="ml-2 text-sm text-gray-600">({{ artisans[2]?.note }}/5)</span>
                 </div>
                 
-                <p class="text-primary font-semibold mb-2">{{ artisans[2].specialite }}</p>
+                <p class="text-primary font-semibold mb-2">{{ artisans[2]?.specialite }}</p>
                 <p class="text-gray-600 text-sm flex items-center justify-center">
                   <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                   </svg>
-                  {{ artisans[2].localisation }}
+                  {{ artisans[2]?.ville }}
                 </p>
               </div>
             </div>
@@ -337,32 +339,25 @@ import { RouterModule } from '@angular/router';
     }
   `]
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   
   // Données des artisans du mois
-  artisans = [
-    {
-      id: 1,
-      nom: 'Martin Dubois',
-      note: 4.8,
-      specialite: 'Maçonnerie',
-      localisation: 'Paris 15ème'
-    },
-    {
-      id: 2,
-      nom: 'Sophie Martin',
-      note: 4.9,
-      specialite: 'Plomberie',
-      localisation: 'Lyon 3ème'
-    },
-    {
-      id: 3,
-      nom: 'Pierre Durand',
-      note: 4.7,
-      specialite: 'Menuiserie',
-      localisation: 'Marseille'
-    }
-  ];
+  artisans: Artisan[] = [];
+
+  constructor(private artisansService: ArtisansService) {}
+
+  ngOnInit(): void {
+    this.loadTopArtisans();
+  }
+
+  private loadTopArtisans(): void {
+    this.artisansService.getArtisans().subscribe(artisans => {
+      // Prendre les 3 premiers artisans les mieux notés
+      this.artisans = artisans
+        .sort((a, b) => b.note - a.note)
+        .slice(0, 3);
+    });
+  }
 
   /**
    * Génère un tableau d'étoiles pour l'affichage des notes

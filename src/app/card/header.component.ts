@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { ArtisansService } from '../services/artisans.service';
 
 @Component({
   selector: 'app-header',
@@ -9,7 +11,8 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     RouterModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   template: `
     <header class="header-main">
@@ -66,15 +69,32 @@ import { FormsModule } from '@angular/forms';
                 (input)="onSearch()"
                 (focus)="showResults = true"
                 (blur)="hideResultsDelayed()"
+                (keyup.enter)="performGlobalSearch()"
                 placeholder="Rechercher un artisan..."
-                class="w-64 px-4 py-2 pl-10 bg-white border border-primary-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                class="w-64 px-4 py-2 pl-10 pr-10 bg-white border border-primary-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+              
+              <!-- Icône loupe cliquable (gauche) -->
               <svg 
-                class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-primary-dark"
+                class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400"
                 fill="none" 
                 stroke="currentColor" 
                 viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
               </svg>
+              
+              <!-- Bouton loupe de recherche (droite) -->
+              <button 
+                (click)="performGlobalSearch()"
+                class="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-primary hover:text-primary-dark hover:bg-primary-light rounded-md transition-all duration-200"
+                title="Rechercher">
+                <svg 
+                  class="w-5 h-5"
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </button>
               
               <!-- Résultats de recherche -->
               <div 
@@ -129,15 +149,32 @@ import { FormsModule } from '@angular/forms';
                 (input)="onSearch()"
                 (focus)="showResults = true"
                 (blur)="hideResultsDelayed()"
+                (keyup.enter)="performGlobalSearch()"
                 placeholder="Rechercher un artisan..."
-                class="w-full px-4 py-3 pl-10 bg-white border border-primary-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-base">
+                class="w-full px-4 py-3 pl-10 pr-12 bg-white border border-primary-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-base">
+              
+              <!-- Icône loupe (gauche) -->
               <svg 
-                class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-primary-dark"
+                class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400"
                 fill="none" 
                 stroke="currentColor" 
                 viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
               </svg>
+              
+              <!-- Bouton loupe de recherche mobile (droite) -->
+              <button 
+                (click)="performGlobalSearch()"
+                class="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 text-primary hover:text-primary-dark hover:bg-primary-light rounded-md transition-all duration-200"
+                title="Rechercher">
+                <svg 
+                  class="w-5 h-5"
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </button>
               
               <!-- Résultats de recherche mobile -->
               <div 
@@ -399,26 +436,25 @@ import { FormsModule } from '@angular/forms';
     }
   `]
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   isMobileMenuOpen = false;
   searchTerm = '';
   showResults = false;
   searchResults: any[] = [];
   private hideResultsTimeout: any;
+  private allArtisans: any[] = [];
 
-  // Données d'exemple d'artisans pour la recherche
-  private artisans = [
-    { id: 1, nom: 'Martin Dupont', specialite: 'Maçonnerie', ville: 'Paris', categorie: 'batiments' },
-    { id: 2, nom: 'Sophie Bernard', specialite: 'Plomberie', ville: 'Lyon', categorie: 'services' },
-    { id: 3, nom: 'Jean Moreau', specialite: 'Menuiserie', ville: 'Marseille', categorie: 'fabrication' },
-    { id: 4, nom: 'Marie Dubois', specialite: 'Boulangerie', ville: 'Toulouse', categorie: 'alimentation' },
-    { id: 5, nom: 'Pierre Laurent', specialite: 'Électricité', ville: 'Nice', categorie: 'services' },
-    { id: 6, nom: 'Claire Petit', specialite: 'Charpenterie', ville: 'Nantes', categorie: 'batiments' },
-    { id: 7, nom: 'Thomas Roux', specialite: 'Pâtisserie', ville: 'Strasbourg', categorie: 'alimentation' },
-    { id: 8, nom: 'Isabelle Martin', specialite: 'Ébénisterie', ville: 'Bordeaux', categorie: 'fabrication' }
-  ];
+  constructor(
+    private router: Router,
+    private artisansService: ArtisansService
+  ) {}
 
-  constructor(private router: Router) {}
+  ngOnInit(): void {
+    // Charger les données des artisans pour la recherche
+    this.artisansService.getArtisans().subscribe(artisans => {
+      this.allArtisans = artisans;
+    });
+  }
 
   /**
    * Navigation vers la page d'accueil
@@ -453,10 +489,11 @@ export class HeaderComponent {
       return;
     }
 
-    this.searchResults = this.artisans.filter(artisan => 
+    this.searchResults = this.allArtisans.filter(artisan => 
       artisan.nom.toLowerCase().includes(term) ||
       artisan.specialite.toLowerCase().includes(term) ||
-      artisan.ville.toLowerCase().includes(term)
+      artisan.ville.toLowerCase().includes(term) ||
+      (artisan.entreprise && artisan.entreprise.toLowerCase().includes(term))
     ).slice(0, 8); // Limiter à 8 résultats
 
     this.showResults = true;
@@ -466,10 +503,29 @@ export class HeaderComponent {
    * Sélectionner un artisan dans les résultats
    */
   selectArtisan(artisan: any): void {
-    this.router.navigate(['/artisan', artisan.id]);
-    this.searchTerm = '';
+    // Rediriger vers la page artisans avec le nom de l'artisan comme recherche
+    this.searchTerm = artisan.nom;
+    this.router.navigate(['/artisans'], { 
+      queryParams: { search: artisan.nom } 
+    });
     this.searchResults = [];
     this.showResults = false;
+    this.closeMobileMenu();
+  }
+
+  /**
+   * Effectuer une recherche globale (redirection vers la page artisans)
+   */
+  performGlobalSearch(): void {
+    if (this.searchTerm.trim()) {
+      console.log('Recherche globale:', this.searchTerm.trim());
+      this.router.navigate(['/artisans'], { 
+        queryParams: { search: this.searchTerm.trim() } 
+      });
+      this.searchResults = [];
+      this.showResults = false;
+      this.closeMobileMenu();
+    }
   }
 
   /**
