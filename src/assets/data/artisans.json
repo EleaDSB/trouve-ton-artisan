@@ -9,6 +9,7 @@
     "categorie": "batiments",
     "telephone": "01 23 45 67 89",
     "email": "martin.dupont@email.com",
+    "siteWeb": "https://www.maconnerie-dupont.fr",
     "description": "Spécialiste en maçonnerie traditionnelle et moderne",
     "aPropos": "Avec plus de 15 ans d'expérience, Martin Dupont est reconnu pour son expertise en maçonnerie traditionnelle et moderne. Son entreprise familiale privilégie la qualité et le respect des délais."
   },
@@ -74,6 +75,7 @@
     "categorie": "batiments",
     "telephone": "02 40 12 34 56",
     "email": "claire.petit@email.com",
+    "siteWeb": "https://www.charpente-petit.fr",
     "description": "Charpente traditionnelle et moderne",
     "aPropos": "Claire Petit maîtrise parfaitement les techniques de charpente traditionnelle et moderne. Son entreprise intervient sur des projets de construction neuve et de rénovation de bâtiments historiques."
   },
@@ -87,6 +89,7 @@
     "categorie": "alimentation",
     "telephone": "03 88 56 78 90",
     "email": "thomas.roux@email.com",
+    "siteWeb": "https://www.patisserie-roux.com",
     "description": "Pâtisserie fine et gâteaux sur mesure",
     "aPropos": "Thomas Roux est un pâtissier créatif qui sublime les desserts classiques avec une touche moderne. Sa pâtisserie propose des créations sur mesure pour tous vos événements."
   },
@@ -100,6 +103,7 @@
     "categorie": "fabrication",
     "telephone": "05 56 34 12 78",
     "email": "isabelle.martin@email.com",
+    "siteWeb": "https://www.ebenisterie-martin.com",
     "description": "Meubles sur mesure en bois massif",
     "aPropos": "Isabelle Martin est une ébéniste reconnue pour ses créations en bois massif. Elle restaure également des meubles anciens et crée des pièces uniques sur commande."
   },
@@ -139,6 +143,7 @@
     "categorie": "services",
     "telephone": "02 41 67 89 12",
     "email": "francois.leroy@email.com",
+    "siteWeb": "https://www.jardins-leroy.fr",
     "description": "Création et entretien d'espaces verts",
     "aPropos": "François Leroy conçoit et aménage des jardins sur mesure. Son expertise couvre la création de jardins, l'entretien d'espaces verts et l'installation de systèmes d'arrosage."
   },

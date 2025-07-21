@@ -8,7 +8,7 @@ export interface Artisan {
   categorie: 'batiments' | 'services' | 'fabrication' | 'alimentation';
   telephone?: string;
   email?: string;
-  website?: string;
+  siteWeb?: string;
   description?: string;
   aPropos?: string;
 }

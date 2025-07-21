@@ -8,6 +8,6 @@ export const routes: Routes = [
   { path: 'services', loadComponent: () => import('./card/artisans-list.component').then(m => m.ArtisansListComponent) },
   { path: 'fabrication', loadComponent: () => import('./card/artisans-list.component').then(m => m.ArtisansListComponent) },
   { path: 'alimentation', loadComponent: () => import('./card/artisans-list.component').then(m => m.ArtisansListComponent) },
-  // { path: 'artisan/:id', loadComponent: () => import('./pages/artisan/artisan.component').then(m => m.ArtisanComponent) },
+  { path: 'artisan/:id', loadComponent: () => import('./card/artisan-details.component').then(m => m.ArtisanDetailsComponent) },
   { path: '**', redirectTo: '/home' }
 ];
