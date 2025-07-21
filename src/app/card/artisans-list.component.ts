@@ -16,29 +16,33 @@ import { ArtisansService } from '../services/artisans.service';
     HttpClientModule
   ],
   template: `
-    <div class="artisans-list-container">
-      <div class="container mx-auto px-4 py-8">
+    <div class="min-h-screen bg-primary-light pt-20 md:pt-24">
+      <!-- Container Mobile-First -->
+      <div class="px-4 mx-auto max-w-7xl pb-8">
         
-        <!-- En-tête avec titre et filtres -->
-        <div class="header-section mb-8">
-          <h1 class="text-4xl font-bold text-text-dark mb-4">
+        <!-- En-tête Mobile-First -->
+        <div class="bg-white rounded-lg p-4 md:p-6 lg:p-8 mb-6 shadow-lg">
+          <!-- Titre adaptatif -->
+          <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-text-dark mb-3 md:mb-4">
             {{ getPageTitle() }}
           </h1>
-          <p class="text-gray-600 mb-6">
+          
+          <!-- Compteur d'artisans -->
+          <p class="text-sm md:text-base text-gray-600 mb-4 md:mb-6">
             {{ filteredArtisans.length }} artisan{{ filteredArtisans.length > 1 ? 's' : '' }} trouvé{{ filteredArtisans.length > 1 ? 's' : '' }}
           </p>
 
-          <!-- Barre de recherche -->
-          <div class="search-section mb-6">
-            <div class="relative max-w-md">
+          <!-- Barre de recherche mobile-first -->
+          <div class="mb-4 md:mb-6">
+            <div class="relative">
               <input 
                 type="text"
                 [(ngModel)]="searchTerm"
                 (input)="filterArtisans()"
                 placeholder="Rechercher un artisan..."
-                class="w-full px-4 py-3 pl-10 bg-white border border-primary-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                class="w-full px-4 py-3 pl-11 text-base bg-primary-light border border-primary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all touch-manipulation">
               <svg 
-                class="absolute left-3 top-1-2 transform -translate-y-1-2 w-4 h-4 text-primary-dark"
+                class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary"
                 fill="none" 
                 stroke="currentColor" 
                 viewBox="0 0 24 24">
@@ -47,103 +51,101 @@ import { ArtisansService } from '../services/artisans.service';
             </div>
           </div>
 
-          <!-- Filtres par catégorie -->
-          <div class="filters-section">
-            <div class="flex flex-wrap gap-3">
+          <!-- Filtres mobile-first avec scroll horizontal -->
+          <div class="overflow-x-auto pb-2">
+            <div class="flex space-x-3 min-w-max">
               <button 
                 (click)="filterByCategory('all')"
                 [class.active]="selectedCategory === 'all'"
-                class="filter-btn">
+                class="filter-btn touch-manipulation whitespace-nowrap">
                 Tous
               </button>
               <button 
                 (click)="filterByCategory('batiments')"
                 [class.active]="selectedCategory === 'batiments'"
-                class="filter-btn">
+                class="filter-btn touch-manipulation whitespace-nowrap">
                 Bâtiments
               </button>
               <button 
                 (click)="filterByCategory('services')"
                 [class.active]="selectedCategory === 'services'"
-                class="filter-btn">
+                class="filter-btn touch-manipulation whitespace-nowrap">
                 Services
               </button>
               <button 
                 (click)="filterByCategory('fabrication')"
                 [class.active]="selectedCategory === 'fabrication'"
-                class="filter-btn">
+                class="filter-btn touch-manipulation whitespace-nowrap">
                 Fabrication
               </button>
               <button 
                 (click)="filterByCategory('alimentation')"
                 [class.active]="selectedCategory === 'alimentation'"
-                class="filter-btn">
+                class="filter-btn touch-manipulation whitespace-nowrap">
                 Alimentation
               </button>
             </div>
           </div>
         </div>
 
-        <!-- Grille des artisans -->
-        <div class="artisans-grid">
+        <!-- Grille des artisans mobile-first -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           <div 
             *ngFor="let artisan of filteredArtisans; trackBy: trackByArtisan"
-            class="artisan-card"
+            class="artisan-card bg-white rounded-lg p-4 md:p-6 shadow-lg cursor-pointer transition-all duration-200 border border-transparent hover:border-primary hover:shadow-xl touch-manipulation"
             (click)="goToArtisanDetail(artisan.id)">
             
-            <!-- En-tête de la carte avec nom/entreprise -->
-            <div class="card-header">
-              <h3 class="artisan-name">{{ artisan.nom }}</h3>
-              <p *ngIf="artisan.entreprise" class="entreprise-name">{{ artisan.entreprise }}</p>
+            <!-- En-tête de la carte -->
+            <div class="mb-3 md:mb-4">
+              <h3 class="text-base md:text-lg font-bold text-text-dark mb-1 leading-tight">{{ artisan.nom }}</h3>
+              <p *ngIf="artisan.entreprise" class="text-xs md:text-sm text-gray-600 italic">{{ artisan.entreprise }}</p>
             </div>
 
-            <!-- Note avec étoiles -->
-            <div class="rating-section">
-              <div class="stars">
-                <span 
-                  *ngFor="let star of [1,2,3,4,5]" 
-                  class="star"
-                  [class.filled]="star <= artisan.note"
-                  [class.empty]="star > artisan.note">
-                  ★
-                </span>
+            <!-- Note avec étoiles mobile-first -->
+            <div class="flex items-center space-x-2 mb-3">
+              <div class="flex space-x-1">
+                <svg *ngFor="let star of getStars(artisan.note)" 
+                     class="w-4 h-4 text-yellow-400 fill-current" 
+                     viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
               </div>
-              <span class="rating-text">{{ artisan.note }}/5</span>
+              <span class="text-xs md:text-sm font-semibold text-gray-600">{{ artisan.note }}/5</span>
             </div>
 
-            <!-- Spécialité -->
-            <div class="speciality-section">
-              <div class="speciality-badge">
+            <!-- Spécialité badge mobile-first -->
+            <div class="mb-3">
+              <span class="inline-block bg-primary-light text-primary text-xs md:text-sm font-semibold px-3 py-1 rounded-full border border-primary/30">
                 {{ artisan.specialite }}
-              </div>
+              </span>
             </div>
 
-            <!-- Localisation -->
-            <div class="location-section">
-              <svg class="location-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <!-- Localisation mobile-first -->
+            <div class="flex items-center space-x-2 text-gray-600">
+              <svg class="w-4 h-4 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
               </svg>
-              <span class="location-text">{{ artisan.ville }}</span>
+              <span class="text-xs md:text-sm font-medium">{{ artisan.ville }}</span>
             </div>
 
-            <!-- Indicateur de clic -->
-            <div class="click-indicator">
-              <svg class="arrow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <!-- Indicateur de clic (desktop uniquement) -->
+            <div class="hidden md:block absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all">
+              <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
               </svg>
             </div>
           </div>
         </div>
 
-        <!-- Message si aucun résultat -->
-        <div *ngIf="filteredArtisans.length === 0" class="no-results">
-          <div class="no-results-content">
-            <svg class="no-results-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <!-- Message si aucun résultat mobile-first -->
+        <div *ngIf="filteredArtisans.length === 0" class="text-center py-12 md:py-16">
+          <div class="bg-white rounded-lg p-6 md:p-8 shadow-lg max-w-md mx-auto">
+            <svg class="w-12 h-12 md:w-16 md:h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
-            <h3 class="no-results-title">Aucun artisan trouvé</h3>
-            <p class="no-results-text">
+            <h3 class="text-lg md:text-xl font-bold text-text-dark mb-2">Aucun artisan trouvé</h3>
+            <p class="text-sm md:text-base text-gray-600 leading-relaxed">
               Essayez de modifier vos critères de recherche ou de sélectionner une autre catégorie.
             </p>
           </div>
@@ -152,7 +154,7 @@ import { ArtisansService } from '../services/artisans.service';
     </div>
   `,
   styles: [`
-    /* Variables CSS pour la charte graphique */
+    /* Variables CSS Mobile-First */
     :host {
       --primary-light: #f1f8fc;
       --primary: #0074c7;
@@ -160,288 +162,190 @@ import { ArtisansService } from '../services/artisans.service';
       --text-dark: #384050;
       --accent-red: #cd2c2e;
       --accent-green: #82b864;
-      --white: #ffffff;
-      --gray-50: #f9fafb;
-      --gray-100: #f3f4f6;
-      --gray-600: #4b5563;
     }
 
-    .artisans-list-container {
-      min-height: 100vh;
-      background-color: var(--primary-light);
+    /* Classes utilitaires */
+    .bg-primary-light { background-color: var(--primary-light); }
+    .bg-primary { background-color: var(--primary); }
+    .text-primary { color: var(--primary); }
+    .text-primary-dark { color: var(--primary-dark); }
+    .text-text-dark { color: var(--text-dark); }
+    .border-primary { border-color: var(--primary); }
+    .focus\\:ring-primary:focus { --tw-ring-color: var(--primary); }
+    .hover\\:border-primary:hover { border-color: var(--primary); }
+
+    /* Interactions tactiles mobile-first */
+    .touch-manipulation {
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .container {
-      max-width: 1200px;
-    }
-
-    /* En-tête */
-    .header-section {
-      background-color: var(--white);
-      padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      margin-bottom: 2rem;
-    }
-
-    /* Barre de recherche */
-    .search-section input {
-      transition: all 0.2s ease;
-    }
-
-    .search-section input:focus {
-      box-shadow: 0 0 0 2px var(--primary);
-      border-color: var(--primary);
-    }
-
-    /* Filtres */
+    /* Filtres mobile-first */
     .filter-btn {
-      padding: 0.75rem 1.5rem;
-      background-color: var(--gray-100);
+      padding: 0.5rem 1rem;
+      background-color: #f3f4f6;
       color: var(--text-dark);
       border: none;
-      border-radius: 0.5rem;
+      border-radius: 9999px;
       font-weight: 500;
+      font-size: 0.875rem;
       cursor: pointer;
       transition: all 0.2s ease;
-      border: 2px solid transparent;
+      border: 1px solid transparent;
     }
 
-    .filter-btn:hover {
-      background-color: var(--primary-light);
-      transform: translateY(-1px);
+    .filter-btn:active {
+      transform: scale(0.98);
     }
 
     .filter-btn.active {
       background-color: var(--primary);
-      color: var(--white);
+      color: white;
       border-color: var(--primary-dark);
+      font-weight: 600;
     }
 
-    /* Grille des artisans */
-    .artisans-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1.5rem;
+    /* Input de recherche mobile-first */
+    input {
+      font-size: 16px; /* Évite le zoom iOS */
+      -webkit-appearance: none;
     }
 
-    /* Cartes d'artisans */
+    input:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--primary);
+    }
+
+    /* Cartes artisans mobile-first */
     .artisan-card {
-      background-color: var(--white);
-      border-radius: 1rem;
-      padding: 1.5rem;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: 2px solid transparent;
       position: relative;
-      overflow: hidden;
+      animation: slideInUp 0.4s ease-out;
     }
 
-    .artisan-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-      border-color: var(--primary);
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    .artisan-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--primary), var(--accent-green));
-      transform: scaleX(0);
-      transition: transform 0.3s ease;
+    /* États tactiles mobile */
+    .artisan-card:active {
+      transform: scale(0.98);
     }
 
-    .artisan-card:hover::before {
-      transform: scaleX(1);
+    /* Hover effects - uniquement desktop */
+    @media (min-width: 768px) {
+      .filter-btn:hover {
+        background-color: var(--primary-light);
+        transform: translateY(-1px);
+        border-color: var(--primary)/30;
+      }
+
+      .filter-btn.active:hover {
+        background-color: var(--primary-dark);
+      }
+
+      .artisan-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 25px -5px rgba(0, 116, 199, 0.15);
+      }
+
+      /* Animation des cartes décalée */
+      .artisan-card:nth-child(1) { animation-delay: 0.1s; }
+      .artisan-card:nth-child(2) { animation-delay: 0.15s; }
+      .artisan-card:nth-child(3) { animation-delay: 0.2s; }
+      .artisan-card:nth-child(4) { animation-delay: 0.25s; }
+      .artisan-card:nth-child(5) { animation-delay: 0.3s; }
+      .artisan-card:nth-child(6) { animation-delay: 0.35s; }
+
+      /* Gradient top border animation */
+      .artisan-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--primary), var(--accent-green));
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+      }
+
+      .artisan-card:hover::before {
+        transform: scaleX(1);
+      }
     }
 
-    /* En-tête de carte */
-    .card-header {
-      margin-bottom: 1rem;
+    /* Desktop improvements */
+    @media (min-width: 1024px) {
+      /* Plus d'espacement sur desktop */
+      .filter-btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.875rem;
+      }
+
+      /* Animations plus fluides */
+      .artisan-card {
+        transition: all 0.3s ease;
+      }
+
+      .artisan-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 25px 35px -5px rgba(0, 116, 199, 0.2);
+      }
+
+      /* Effet de groupe pour les indicateurs */
+      .artisan-card {
+        group: true;
+      }
     }
 
-    .artisan-name {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--text-dark);
-      margin-bottom: 0.25rem;
+    /* Accessibilité */
+    button:focus,
+    input:focus {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
     }
 
-    .entreprise-name {
-      color: var(--gray-600);
-      font-size: 0.875rem;
-      font-style: italic;
+    /* Performance - GPU acceleration */
+    .artisan-card {
+      transform: translateZ(0);
+      will-change: transform;
     }
 
-    /* Section notation */
-    .rating-section {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
+    /* Réduction de mouvement */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
     }
 
-    .stars {
-      display: flex;
-      gap: 0.125rem;
-    }
-
-    .star {
-      font-size: 1.25rem;
-      transition: all 0.2s ease;
-    }
-
-    .star.filled {
-      color: #fbbf24;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    }
-
-    .star.empty {
-      color: #d1d5db;
-    }
-
-    .rating-text {
-      font-size: 0.875rem;
-      color: var(--gray-600);
-      font-weight: 500;
-    }
-
-    /* Section spécialité */
-    .speciality-section {
-      margin-bottom: 1rem;
-    }
-
-    .speciality-badge {
-      display: inline-block;
-      background-color: var(--primary-light);
-      color: var(--primary-dark);
-      padding: 0.375rem 0.75rem;
-      border-radius: 0.375rem;
-      font-size: 0.875rem;
-      font-weight: 500;
-      border: 1px solid var(--primary);
-    }
-
-    /* Section localisation */
-    .location-section {
-      display: flex;
-      align-items: center;
-      gap: 0.375rem;
-      color: var(--gray-600);
-    }
-
-    .location-icon {
-      width: 1rem;
-      height: 1rem;
-      color: var(--primary);
-    }
-
-    .location-text {
-      font-size: 0.875rem;
-      font-weight: 500;
-    }
-
-    /* Indicateur de clic */
-    .click-indicator {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      opacity: 0;
-      transition: all 0.3s ease;
-    }
-
-    .artisan-card:hover .click-indicator {
-      opacity: 1;
-      transform: translateX(4px);
-    }
-
-    .arrow-icon {
-      width: 1.25rem;
-      height: 1.25rem;
-      color: var(--primary);
-    }
-
-    /* Message aucun résultat */
-    .no-results {
-      text-align: center;
-      padding: 4rem 2rem;
-    }
-
-    .no-results-content {
-      max-width: 400px;
-      margin: 0 auto;
-    }
-
-    .no-results-icon {
-      width: 4rem;
-      height: 4rem;
-      color: var(--gray-600);
-      margin: 0 auto 1rem;
-    }
-
-    .no-results-title {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--text-dark);
-      margin-bottom: 0.5rem;
-    }
-
-    .no-results-text {
-      color: var(--gray-600);
-      line-height: 1.6;
-    }
-
-    /* Classes utilitaires */
-    .text-4xl { font-size: 2.25rem; }
-    .font-bold { font-weight: 700; }
-    .text-text-dark { color: var(--text-dark); }
-    .mb-4 { margin-bottom: 1rem; }
-    .mb-6 { margin-bottom: 1.5rem; }
-    .mb-8 { margin-bottom: 2rem; }
-    .text-gray-600 { color: var(--gray-600); }
-    .max-w-md { max-width: 28rem; }
-    .px-4 { padding-left: 1rem; padding-right: 1rem; }
-    .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
-    .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
-    .pl-10 { padding-left: 2.5rem; }
-    .w-full { width: 100%; }
-    .relative { position: relative; }
-    .absolute { position: absolute; }
-    .left-3 { left: 0.75rem; }
-    .top-1-2 { top: 50%; }
-    .transform { transform: none; }
-    .-translate-y-1-2 { transform: translateY(-50%); }
-    .w-4 { width: 1rem; }
-    .h-4 { height: 1rem; }
-    .flex { display: flex; }
-    .flex-wrap { flex-wrap: wrap; }
-    .gap-3 { gap: 0.75rem; }
-    .bg-white { background-color: var(--white); }
-    .border { border-width: 1px; }
-    .border-primary-dark { border-color: var(--primary-dark); }
-    .rounded-lg { border-radius: 0.5rem; }
-    .focus\\:outline-none:focus { outline: none; }
-    .focus\\:ring-2:focus { box-shadow: 0 0 0 2px var(--primary); }
-    .focus\\:ring-primary:focus { --tw-ring-color: var(--primary); }
-    .focus\\:border-transparent:focus { border-color: transparent; }
-    
-    /* Responsive */
-    @media (max-width: 768px) {
-      .artisans-grid {
-        grid-template-columns: 1fr;
+    /* Mode sombre */
+    @media (prefers-color-scheme: dark) {
+      .bg-white {
+        background-color: #1f2937;
+        color: #f9fafb;
       }
       
-      .header-section {
-        padding: 1.5rem;
+      .filter-btn {
+        background-color: #374151;
+        color: #d1d5db;
       }
       
-      .text-4xl {
-        font-size: 1.875rem;
+      .filter-btn:hover {
+        background-color: #4b5563;
+      }
+      
+      input {
+        background-color: #374151;
+        color: #f9fafb;
+        border-color: rgba(255, 255, 255, 0.2);
       }
     }
   `]
@@ -557,5 +461,13 @@ export class ArtisansListComponent implements OnInit {
 
   trackByArtisan(index: number, artisan: Artisan): number {
     return artisan.id;
+  }
+
+  /**
+   * Génère un tableau d'étoiles pour l'affichage des notes
+   */
+  getStars(note: number): number[] {
+    const fullStars = Math.floor(note);
+    return Array(fullStars).fill(0);
   }
 }
