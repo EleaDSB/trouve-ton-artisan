@@ -21,7 +21,7 @@ import { ArtisansService } from '../services/artisans.service';
       <div class="px-4 mx-auto max-w-7xl pb-8">
         
         <!-- En-tête Mobile-First -->
-        <div class="bg-white rounded-lg p-4 md:p-6 lg:p-8 mb-6 shadow-lg">
+        <div class="bg-white rounded-lg p-4 md:p-6 lg:p-8 mb-12 shadow-lg mt-6">
           <!-- Titre adaptatif -->
           <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-text-dark mb-3 md:mb-4">
             {{ getPageTitle() }}
@@ -34,20 +34,19 @@ import { ArtisansService } from '../services/artisans.service';
 
           <!-- Barre de recherche mobile-first -->
           <div class="mb-4 md:mb-6">
-            <div class="relative">
+            <div class="search-input-wrapper">
               <input 
                 type="text"
                 [(ngModel)]="searchTerm"
                 (input)="filterArtisans()"
                 placeholder="Rechercher un artisan..."
-                class="w-full px-4 py-3 pl-11 text-base bg-primary-light border border-primary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all touch-manipulation">
-              <svg 
-                class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary"
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-              </svg>
+                class="search-input">
+              <button 
+                class="search-btn">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+              </button>
             </div>
           </div>
 
@@ -89,7 +88,7 @@ import { ArtisansService } from '../services/artisans.service';
         </div>
 
         <!-- Grille des artisans mobile-first -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           <div 
             *ngFor="let artisan of filteredArtisans; trackBy: trackByArtisan"
             class="artisan-card bg-white rounded-lg p-4 md:p-6 shadow-lg cursor-pointer transition-all duration-200 border border-transparent hover:border-primary hover:shadow-xl touch-manipulation"
@@ -205,15 +204,52 @@ import { ArtisansService } from '../services/artisans.service';
       font-weight: 600;
     }
 
-    /* Input de recherche mobile-first */
-    input {
+    /* Barre de recherche harmonisée avec le header */
+    .search-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      padding-right: 3rem;
+      border: none;
+      border-radius: 0.5rem;
+      background-color: rgba(255, 255, 255, 0.9);
+      color: #384050;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.2s ease;
       font-size: 16px; /* Évite le zoom iOS */
       -webkit-appearance: none;
     }
 
-    input:focus {
-      outline: none;
-      box-shadow: 0 0 0 2px var(--primary);
+    .search-input:focus {
+      background-color: white;
+      box-shadow: 0 0 0 2px rgba(0, 116, 199, 0.3);
+    }
+
+    .search-input::placeholder {
+      color: #6b7280;
+    }
+
+    .search-btn {
+      position: absolute;
+      right: 0.5rem;
+      background: none;
+      border: none;
+      color: #0074c7;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 0.25rem;
+      transition: all 0.2s ease;
+    }
+
+    .search-btn:hover {
+      background-color: rgba(0, 116, 199, 0.1);
+      color: #00497c;
     }
 
     /* Cartes artisans mobile-first */
@@ -326,26 +362,37 @@ import { ArtisansService } from '../services/artisans.service';
       }
     }
 
-    /* Mode sombre */
+    /* Forcer le fond blanc pour tous les blocs */
+    .bg-white {
+      background-color: #ffffff !important;
+      color: #384050 !important;
+    }
+
+    /* Mode sombre désactivé pour garder fond blanc */
     @media (prefers-color-scheme: dark) {
       .bg-white {
-        background-color: #1f2937;
-        color: #f9fafb;
+        background-color: #ffffff !important;
+        color: #384050 !important;
       }
       
       .filter-btn {
-        background-color: #374151;
-        color: #d1d5db;
+        background-color: #f3f4f6 !important;
+        color: #384050 !important;
       }
       
       .filter-btn:hover {
-        background-color: #4b5563;
+        background-color: var(--primary-light) !important;
+      }
+      
+      .filter-btn.active {
+        background-color: var(--primary) !important;
+        color: white !important;
       }
       
       input {
-        background-color: #374151;
-        color: #f9fafb;
-        border-color: rgba(255, 255, 255, 0.2);
+        background-color: var(--primary-light) !important;
+        color: #384050 !important;
+        border-color: rgba(0, 116, 199, 0.3) !important;
       }
     }
   `]
