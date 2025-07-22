@@ -9,5 +9,6 @@ export const routes: Routes = [
   { path: 'fabrication', loadComponent: () => import('./card/artisans-list.component').then(m => m.ArtisansListComponent) },
   { path: 'alimentation', loadComponent: () => import('./card/artisans-list.component').then(m => m.ArtisansListComponent) },
   { path: 'artisan/:id', loadComponent: () => import('./card/artisan-details.component').then(m => m.ArtisanDetailsComponent) },
-  { path: '**', redirectTo: '/home' }
+  { path: '404', loadComponent: () => import('./card/page-404.component').then(m => m.Page404Component) },
+  { path: '**', redirectTo: '/404' }
 ];
