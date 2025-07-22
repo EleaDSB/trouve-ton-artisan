@@ -170,8 +170,10 @@ import { ArtisansService } from '../services/artisans.service';
       width: 4rem;
       object-fit: cover;
       border-radius: 0.5rem;
-      border: 2px solid rgba(241, 248, 252, 0.5);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      background-color: white;
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      padding: 0.25rem;
     }
 
     .mobile-menu-btn {
@@ -330,6 +332,7 @@ import { ArtisansService } from '../services/artisans.service';
       .logo {
         height: 4rem;
         width: 5rem;
+        padding: 0.375rem;
       }
       
       .mobile-menu-btn {

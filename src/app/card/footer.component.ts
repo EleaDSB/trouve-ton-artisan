@@ -15,39 +15,39 @@ import { RouterModule } from '@angular/router';
     <footer class="bg-primary-dark py-8 md:py-12 lg:py-16 mt-auto">
       <div class="px-4 mx-auto max-w-7xl">
         
-        <!-- Container mobile-first -->
-        <div class="space-y-8 md:space-y-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8 lg:gap-12">
+        <!-- Container 3 colonnes : Logo | Adresse | Informations légales -->
+        <div class="footer-grid">
 
-          <!-- Section Logo Mobile-First -->
-          <div class="text-center md:col-span-2 lg:col-span-1">
-            <div class="flex justify-center mb-4 md:mb-6">
+          <!-- Colonne 1 : Logo -->
+          <div class="footer-column">
+            <div class="mb-4 flex justify-center">
               <img 
                 src="assets/images/logo.png" 
                 alt="Logo Trouve Ton Artisan" 
-                class="h-16 w-20 sm:h-20 sm:w-24 md:h-24 md:w-28 lg:h-32 lg:w-36 object-cover rounded-lg border-2 border-primary-light shadow-lg transition-transform duration-200 touch-manipulation hover:scale-105"
+                class="h-16 w-20 object-cover rounded-lg bg-white border-2 border-primary-light shadow-lg transition-transform duration-200 touch-manipulation hover:scale-105 p-2"
                 (error)="onLogoError($event)">
             </div>
-            <p class="text-primary-light text-sm md:text-base leading-relaxed max-w-xs mx-auto">
+            <p class="text-primary-light text-sm leading-relaxed">
               Trouvez l'artisan parfait près de chez vous en quelques clics
             </p>
           </div>
           
-          <!-- Section Adresse Mobile-First -->
-          <div class="text-center md:text-left">
-            <div class="flex items-center justify-center md:justify-start space-x-2 mb-3 md:mb-4">
+          <!-- Colonne 2 : Adresse -->
+          <div class="footer-column">
+            <div class="flex items-center space-x-3 mb-4">
               <svg class="w-5 h-5 text-primary-light flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
               </svg>
-              <h3 class="text-white font-semibold text-base md:text-lg">Notre Adresse</h3>
+              <h3 class="text-white font-semibold text-base">Notre Adresse</h3>
             </div>
-            <div class="text-primary-light text-sm md:text-base leading-relaxed space-y-1">
+            <div class="text-primary-light text-sm leading-relaxed space-y-1">
               <p>101 cours Charlemagne</p>
               <p>CS 200033</p>
               <p>69269 LYON CEDEX 02</p>
               <p>France</p>
-              <a href="tel:+33426734000" class="inline-block mt-2 text-white font-medium hover:text-primary-light transition-colors touch-manipulation">
-                <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <a href="tel:+33426734000" class="inline-flex items-center mt-3 text-white font-medium hover:text-primary-light transition-colors touch-manipulation">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                 </svg>
                 +33 (0)4 26 73 40 00
@@ -55,29 +55,29 @@ import { RouterModule } from '@angular/router';
             </div>
           </div>
 
-          <!-- Section Pages légales Mobile-First -->
-          <div class="text-center md:text-left">
-            <div class="flex items-center justify-center md:justify-start space-x-2 mb-3 md:mb-4">
+          <!-- Colonne 3 : Informations légales -->
+          <div class="footer-column">
+            <div class="flex items-center space-x-3 mb-4">
               <svg class="w-5 h-5 text-primary-light flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
               </svg>
-              <h3 class="text-white font-semibold text-base md:text-lg">Informations Légales</h3>
+              <h3 class="text-white font-semibold text-base">Informations Légales</h3>
             </div>
             <div class="space-y-2">
               <a routerLink="/mentions-legales" 
-                 class="block text-primary-light text-sm md:text-base hover:text-white transition-colors duration-200 py-1 touch-manipulation">
+                 class="block text-primary-light text-sm hover:text-white transition-colors duration-200 py-1 touch-manipulation">
                 Mentions Légales
               </a>
               <a routerLink="/donnees-personnelles" 
-                 class="block text-primary-light text-sm md:text-base hover:text-white transition-colors duration-200 py-1 touch-manipulation">
+                 class="block text-primary-light text-sm hover:text-white transition-colors duration-200 py-1 touch-manipulation">
                 Données personnelles
               </a>
               <a routerLink="/accessibilite" 
-                 class="block text-primary-light text-sm md:text-base hover:text-white transition-colors duration-200 py-1 touch-manipulation">
+                 class="block text-primary-light text-sm hover:text-white transition-colors duration-200 py-1 touch-manipulation">
                 Accessibilité
               </a>
               <a routerLink="/cookies" 
-                 class="block text-primary-light text-sm md:text-base hover:text-white transition-colors duration-200 py-1 touch-manipulation">
+                 class="block text-primary-light text-sm hover:text-white transition-colors duration-200 py-1 touch-manipulation">
                 Cookies
               </a>
             </div>
@@ -85,13 +85,10 @@ import { RouterModule } from '@angular/router';
         </div>
 
         <!-- Ligne de séparation -->
-        <div class="border-t border-primary/30 mt-8 pt-6 md:mt-12 md:pt-8">
+        <div class="border-t border-primary/30 mt-6 pt-12 md:mt-12 md:pt-8">
           <div class="text-center">
             <p class="text-primary-light text-xs md:text-sm">
               © {{ currentYear }} Trouve Ton Artisan - Tous droits réservés
-            </p>
-            <p class="text-primary-light/70 text-xs mt-1">
-              Développé avec ❤️ pour les artisans français
             </p>
           </div>
         </div>
@@ -206,6 +203,30 @@ import { RouterModule } from '@angular/router';
     img:focus {
       outline: 2px solid var(--primary-light);
       outline-offset: 2px;
+    }
+
+    /* Layout Grid Footer */
+    .footer-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .footer-column {
+      text-align: center;
+    }
+
+    @media (min-width: 768px) {
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 3rem;
+        align-items: start;
+      }
+      
+      .footer-column {
+        text-align: left;
+      }
     }
 
     /* Performance */
