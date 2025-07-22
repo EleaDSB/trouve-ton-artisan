@@ -167,8 +167,8 @@ import { Artisan } from '../models/artisan.model';
                 id="nom"
                 type="text" 
                 formControlName="nom"
-                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                placeholder="  Votre nom complet">
+                class="w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                placeholder="Votre nom complet">
               
               <div *ngIf="contactForm.get('nom')?.invalid && contactForm.get('nom')?.touched" 
                    class="mt-1 text-xs text-red-600">
@@ -185,8 +185,8 @@ import { Artisan } from '../models/artisan.model';
                 id="objet"
                 type="text" 
                 formControlName="objet"
-                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                placeholder="  L'objet de votre message">
+                class="w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                placeholder="L'objet de votre message">
               
               <div *ngIf="contactForm.get('objet')?.invalid && contactForm.get('objet')?.touched" 
                    class="mt-1 text-xs text-red-600">
@@ -203,8 +203,8 @@ import { Artisan } from '../models/artisan.model';
                 id="message"
                 formControlName="message"
                 rows="4"
-                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
-                placeholder=" Décrivez votre demande..."></textarea>
+                class="w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+                placeholder="Décrivez votre demande..."></textarea>
               
               <div *ngIf="contactForm.get('message')?.invalid && contactForm.get('message')?.touched" 
                    class="mt-1 text-xs text-red-600">
