@@ -2,15 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ArtisansService } from '../services/artisans.service';
+import { EmailService } from '../services/email.service';
 import { Artisan } from '../models/artisan.model';
 
 @Component({
   selector: 'app-artisan-details',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, HttpClientModule],
   template: `
     <div class="min-h-screen bg-primary-light " style="padding-top: 30px;">
       
@@ -163,16 +163,34 @@ import { Artisan } from '../models/artisan.model';
               <label for="nom" class="block text-sm font-medium text-text-dark mb-2">
                 Nom complet <span class="text-red-500">*</span>
               </label>
-              <input 
+              <input
                 id="nom"
-                type="text" 
+                type="text"
                 formControlName="nom"
                 class="w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 placeholder="Votre nom complet">
-              
-              <div *ngIf="contactForm.get('nom')?.invalid && contactForm.get('nom')?.touched" 
+
+              <div *ngIf="contactForm.get('nom')?.invalid && contactForm.get('nom')?.touched"
                    class="mt-1 text-xs text-red-600">
                 Le nom est requis
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div>
+              <label for="email" class="block text-sm font-medium text-text-dark mb-2">
+                Email <span class="text-red-500">*</span>
+              </label>
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                class="w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                placeholder="votre.email@exemple.com">
+
+              <div *ngIf="contactForm.get('email')?.invalid && contactForm.get('email')?.touched"
+                   class="mt-1 text-xs text-red-600">
+                Un email valide est requis
               </div>
             </div>
 
@@ -424,12 +442,13 @@ export class ArtisanDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private artisansService: ArtisansService,
-    private fb: FormBuilder,
-    private http: HttpClient
+    private emailService: EmailService,
+    private fb: FormBuilder
   ) {
     // Initialisation du formulaire de contact
     this.contactForm = this.fb.group({
       nom: ['', [Validators.required, Validators.minLength(2)]],
+      email: ['', [Validators.required, Validators.email]],
       objet: ['', [Validators.required, Validators.minLength(3)]],
       message: ['', [Validators.required, Validators.minLength(10)]]
     });
@@ -489,20 +508,28 @@ export class ArtisanDetailsComponent implements OnInit {
     this.contactMessage = '';
 
     const formData = this.contactForm.value;
-    const emailData = {
-      to: this.artisan.email,
-      subject: formData.objet || '',
-      from: formData.nom || '',
-      message: formData.message || '',
-      artisan: this.artisan.nom
+
+    // Préparer les données pour l'API
+    const contactData = {
+      nom: formData.nom,
+      email: formData.email,
+      objet: formData.objet,
+      message: formData.message,
+      artisanEmail: this.artisan.email,
+      artisanNom: this.artisan.nom
     };
 
-    // Simulation d'envoi d'email (remplacez par votre service d'email)
-    this.sendEmail(emailData).subscribe({
+    // Envoi via le service email
+    this.emailService.sendContactEmail(contactData).subscribe({
       next: (response) => {
-        this.contactMessage = 'Votre message a été envoyé avec succès ! L\'artisan vous répondra sous 48h.';
-        this.contactMessageType = 'success';
-        this.contactForm.reset();
+        if (response.success) {
+          this.contactMessage = response.message || 'Votre message a été envoyé avec succès ! L\'artisan vous répondra sous 48h.';
+          this.contactMessageType = 'success';
+          this.contactForm.reset();
+        } else {
+          this.contactMessage = response.error || 'Une erreur est survenue lors de l\'envoi.';
+          this.contactMessageType = 'error';
+        }
         this.isSubmitting = false;
 
         // Masquer le message après 5 secondes
@@ -512,7 +539,7 @@ export class ArtisanDetailsComponent implements OnInit {
       },
       error: (error) => {
         console.error('Erreur lors de l\'envoi du message:', error);
-        this.contactMessage = 'Une erreur est survenue lors de l\'envoi du message. Veuillez réessayer.';
+        this.contactMessage = error.error?.error || 'Une erreur est survenue lors de l\'envoi du message. Veuillez réessayer.';
         this.contactMessageType = 'error';
         this.isSubmitting = false;
 
@@ -522,15 +549,5 @@ export class ArtisanDetailsComponent implements OnInit {
         }, 5000);
       }
     });
-  }
-
-  /**
-   * Simulation d'envoi d'email (à remplacer par votre service réel)
-   */
-  private sendEmail(emailData: { to: string, subject: string, from: string, message: string, artisan: string }): Observable<{ success: boolean }> {
-    // Pour le moment, on simule un succès avec Observable
-    // Dans un vrai projet, vous appelleriez votre API backend qui utilise maildev
-    console.log('Email simulé envoyé:', emailData);
-    return of({ success: true });
   }
 }
