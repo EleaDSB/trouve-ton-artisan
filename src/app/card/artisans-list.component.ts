@@ -18,7 +18,7 @@ import { ArtisansService } from '../services/artisans.service';
   template: `
     <div class="min-h-screen bg-primary-light pt-20 md:pt-24">
       <!-- Container Mobile-First -->
-      <div class="px-4 mx-auto max-w-7xl pb-8">
+      <div class="container pb-8">
         
         <!-- En-tête Mobile-First -->
         <div class="bg-white rounded-lg p-4 md:p-6 lg:p-8 mb-12 shadow-lg mt-6">

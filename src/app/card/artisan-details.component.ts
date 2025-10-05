@@ -15,7 +15,7 @@ import { Artisan } from '../models/artisan.model';
     <div class="min-h-screen bg-primary-light " style="padding-top: 30px;">
       
       <!-- Bouton retour -->
-      <div class="px-4 mb-6">
+      <div class="container mb-6">
         <button 
           (click)="goBack()"
           class="flex items-center px-4 py-3 bg-accent-green text-white rounded-lg hover:bg-green-600 transition-colors duration-200"
@@ -28,12 +28,12 @@ import { Artisan } from '../models/artisan.model';
       </div>
 
       <!-- États de chargement/erreur -->
-      <div *ngIf="isLoading" class="px-4 py-16 text-center">
+      <div *ngIf="isLoading" class="container py-16 text-center">
         <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
         <p class="mt-4 text-gray-600 text-sm">Chargement...</p>
       </div>
 
-      <div *ngIf="!isLoading && !artisan" class="px-4 py-16 text-center">
+      <div *ngIf="!isLoading && !artisan" class="container py-16 text-center">
         <svg class="w-12 h-12 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833.192 2.5 1.732 2.5z"></path>
         </svg>
@@ -42,7 +42,7 @@ import { Artisan } from '../models/artisan.model';
       </div>
 
       <!-- Contenu principal -->
-      <div *ngIf="!isLoading && artisan" class="px-4 pb-8">
+      <div *ngIf="!isLoading && artisan" class="container pb-8">
         
         <!-- En-tête artisan -->
         <div class="bg-white rounded-lg shadow-lg p-4 mb-6">

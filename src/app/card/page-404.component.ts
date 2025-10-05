@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-page-404',
@@ -11,7 +12,7 @@ import { Router, RouterModule } from '@angular/router';
   ],
   template: `
     <div class="min-h-screen bg-primary-light pt-20 md:pt-24 flex items-center justify-center">
-      <div class="px-4 mx-auto max-w-4xl text-center">
+      <div class="container text-center max-w-4xl">
         
         <!-- Numéro 404 -->
         <div class="mb-8">
@@ -206,10 +207,72 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class Page404Component implements OnInit {
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private titleService: Title,
+    private metaService: Meta
+  ) {}
 
   ngOnInit(): void {
-    // Component initialized
+    this.setSEOData();
+  }
+
+  /**
+   * Configuration des métadonnées SEO pour la page 404
+   */
+  private setSEOData(): void {
+    // Titre de la page
+    this.titleService.setTitle('Page introuvable - 404 | Trouve Ton Artisan');
+
+    // Métadonnées pour le référencement
+    this.metaService.updateTag({
+      name: 'description',
+      content: 'Page non trouvée. Découvrez nos artisans qualifiés dans votre région : bâtiment, services, fabrication et alimentation. Trouvez l\'artisan parfait près de chez vous.'
+    });
+
+    // Métadonnées Open Graph pour les réseaux sociaux
+    this.metaService.updateTag({
+      property: 'og:title',
+      content: 'Page introuvable - 404 | Trouve Ton Artisan'
+    });
+
+    this.metaService.updateTag({
+      property: 'og:description',
+      content: 'Page non trouvée. Découvrez nos artisans qualifiés dans votre région : bâtiment, services, fabrication et alimentation.'
+    });
+
+    this.metaService.updateTag({
+      property: 'og:type',
+      content: 'website'
+    });
+
+    // Métadonnées Twitter Card
+    this.metaService.updateTag({
+      name: 'twitter:card',
+      content: 'summary'
+    });
+
+    this.metaService.updateTag({
+      name: 'twitter:title',
+      content: 'Page introuvable - 404 | Trouve Ton Artisan'
+    });
+
+    this.metaService.updateTag({
+      name: 'twitter:description',
+      content: 'Page non trouvée. Découvrez nos artisans qualifiés dans votre région.'
+    });
+
+    // Indication aux moteurs de recherche de ne pas indexer cette page
+    this.metaService.updateTag({
+      name: 'robots',
+      content: 'noindex, follow'
+    });
+
+    // Canonical URL pour éviter le contenu dupliqué
+    this.metaService.updateTag({
+      rel: 'canonical',
+      href: 'https://trouve-ton-artisan.fr/404'
+    });
   }
 
   /**
