@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
+import { Meta, Title } from '@angular/platform-browser';
 import { ArtisansService } from '../services/artisans.service';
 import { Artisan } from '../models/artisan.model';
 
@@ -172,10 +173,102 @@ export class HomeComponent implements OnInit {
   // Données des artisans du mois
   artisans: Artisan[] = [];
 
-  constructor(private artisansService: ArtisansService, private router: Router) {}
+  constructor(
+    private artisansService: ArtisansService, 
+    private router: Router,
+    private titleService: Title,
+    private metaService: Meta
+  ) {}
 
   ngOnInit(): void {
+    this.setSEOData();
     this.loadTopArtisans();
+  }
+
+  /**
+   * Configuration des métadonnées SEO pour la page d'accueil
+   */
+  private setSEOData(): void {
+    // Titre de la page
+    this.titleService.setTitle('Trouve Ton Artisan - Artisans qualifiés près de chez vous');
+
+    // Meta description optimisée pour le SEO
+    this.metaService.updateTag({
+      name: 'description',
+      content: 'Trouvez l\'artisan parfait près de chez vous ! Découvrez nos artisans qualifiés spécialisés dans le bâtiment, les services à domicile, la fabrication et l\'alimentation. Réponse garantie sous 48h.'
+    });
+
+    // Mots-clés pour le référencement
+    this.metaService.updateTag({
+      name: 'keywords',
+      content: 'artisan, artisans qualifiés, bâtiment, services, fabrication, alimentation, devis, réparation, construction, près de chez vous'
+    });
+
+    // Métadonnées Open Graph pour les réseaux sociaux
+    this.metaService.updateTag({
+      property: 'og:title',
+      content: 'Trouve Ton Artisan - Artisans qualifiés près de chez vous'
+    });
+
+    this.metaService.updateTag({
+      property: 'og:description',
+      content: 'Trouvez l\'artisan parfait près de chez vous ! Artisans qualifiés dans le bâtiment, services, fabrication et alimentation. Réponse garantie sous 48h.'
+    });
+
+    this.metaService.updateTag({
+      property: 'og:type',
+      content: 'website'
+    });
+
+    this.metaService.updateTag({
+      property: 'og:url',
+      content: 'https://trouve-ton-artisan.fr'
+    });
+
+    // Métadonnées Twitter Card
+    this.metaService.updateTag({
+      name: 'twitter:card',
+      content: 'summary_large_image'
+    });
+
+    this.metaService.updateTag({
+      name: 'twitter:title',
+      content: 'Trouve Ton Artisan - Artisans qualifiés près de chez vous'
+    });
+
+    this.metaService.updateTag({
+      name: 'twitter:description',
+      content: 'Trouvez l\'artisan parfait près de chez vous ! Artisans qualifiés, réponse garantie sous 48h.'
+    });
+
+    // Informations pour les moteurs de recherche locaux
+    this.metaService.updateTag({
+      name: 'geo.region',
+      content: 'FR'
+    });
+
+    this.metaService.updateTag({
+      name: 'geo.placename',
+      content: 'France'
+    });
+
+    // Indication aux moteurs de recherche
+    this.metaService.updateTag({
+      name: 'robots',
+      content: 'index, follow'
+    });
+
+    // Canonical URL
+    this.metaService.updateTag({
+      rel: 'canonical',
+      href: 'https://trouve-ton-artisan.fr'
+    });
+
+    // Langue du contenu
+    this.metaService.updateTag({
+      name: 'language',
+      content: 'fr-FR'
+    });
   }
 
   private loadTopArtisans(): void {

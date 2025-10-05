@@ -13,7 +13,7 @@ import { RouterModule } from '@angular/router';
   template: `
     <!-- Footer Mobile-First -->
     <footer class="bg-primary-dark py-8 md:py-12 lg:py-16 mt-auto">
-      <div class="px-4 mx-auto max-w-7xl">
+      <div class="container">
         
         <!-- Container 3 colonnes : Logo | Adresse | Informations légales -->
         <div class="footer-grid">
@@ -28,12 +28,12 @@ import { RouterModule } from '@angular/router';
                 (error)="onLogoError($event)">
             </div>
             <p class="text-primary-light text-sm leading-relaxed">
-              Trouvez l'artisan parfait près de chez vous en quelques clics
+              Trouvez l'artisan parfait près de chez vous en quelques clics.
             </p>
           </div>
           
           <!-- Colonne 2 : Adresse -->
-          <div class="footer-column">
+          <div class="footer-column flex flex-col items-center">
             <div class="flex items-center space-x-3 mb-4">
               <svg class="w-5 h-5 text-primary-light flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
@@ -56,7 +56,7 @@ import { RouterModule } from '@angular/router';
           </div>
 
           <!-- Colonne 3 : Informations légales -->
-          <div class="footer-column">
+          <div class="footer-column flex flex-col items-end pr-6 md:pr-12">
             <div class="flex items-center space-x-3 mb-4">
               <svg class="w-5 h-5 text-primary-light flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
