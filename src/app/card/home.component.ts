@@ -1,101 +1,103 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, DestroyRef, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ArtisansService } from '../services/artisans.service';
 import { Artisan } from '../models/artisan.model';
 
 @Component({
   selector: 'app-home',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, RouterModule],
   template: `
     <div class="min-h-screen" style="background-color: #f1f8fc;">
 
       <!-- Section Comment trouver mon artisan -->
-      <section class="py-8 md:py-16">
-        <div class="container">
-          
+      <section class="py-6 px-4 md:py-12 md:px-6 lg:py-16">
+        <div class="container-custom">
+
           <!-- Titre -->
-          <div class="text-center mb-12">
-            <h2 class="text-xl md:text-4xl lg:text-5xl font-bold mb-6" style="color: #384050;">
+          <div class="text-center mb-8 md:mb-12">
+            <h2 class="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 md:mb-4 lg:mb-6 px-4" style="color: #384050;">
               Comment trouver ton artisan ?
             </h2>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto px-4">
               Trouvez l'artisan parfait en 4 étapes simples
             </p>
           </div>
 
           <!-- Grid des étapes -->
-          <div class="grid grid-1 md:grid-2 lg:grid-4 gap-6 mb-16">
-            
+          <div class="steps-grid">
+
             <!-- Étape 1 -->
-            <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+            <div class="step-card">
               <div class="text-center">
-                <div class="w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4 text-white" style="background-color: #0074c7;">
+                <div class="step-number" style="background-color: #0074c7;">
                   1
                 </div>
-                <svg class="w-12 h-12 mx-auto mb-4" style="color: #0074c7;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="step-icon" style="color: #0074c7;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
                 </svg>
-                <h3 class="text-lg font-semibold mb-2" style="color: #384050;">
+                <h3 class="step-title" style="color: #384050;">
                   Choisir la catégorie
                 </h3>
-                <p class="text-sm text-gray-600">
+                <p class="step-description">
                   Sélectionnez la catégorie dans le menu
                 </p>
               </div>
             </div>
 
             <!-- Étape 2 -->
-            <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+            <div class="step-card">
               <div class="text-center">
-                <div class="w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4 text-white" style="background-color: #0074c7;">
+                <div class="step-number" style="background-color: #0074c7;">
                   2
                 </div>
-                <svg class="w-12 h-12 mx-auto mb-4" style="color: #0074c7;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="step-icon" style="color: #0074c7;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                 </svg>
-                <h3 class="text-lg font-semibold mb-2" style="color: #384050;">
+                <h3 class="step-title" style="color: #384050;">
                   Choisir un artisan
                 </h3>
-                <p class="text-sm text-gray-600">
+                <p class="step-description">
                   Parcourez les profils disponibles
                 </p>
               </div>
             </div>
 
             <!-- Étape 3 -->
-            <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+            <div class="step-card">
               <div class="text-center">
-                <div class="w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4 text-white" style="background-color: #0074c7;">
+                <div class="step-number" style="background-color: #0074c7;">
                   3
                 </div>
-                <svg class="w-12 h-12 mx-auto mb-4" style="color: #0074c7;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="step-icon" style="color: #0074c7;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                 </svg>
-                <h3 class="text-lg font-semibold mb-2" style="color: #384050;">
+                <h3 class="step-title" style="color: #384050;">
                   Le contacter
                 </h3>
-                <p class="text-sm text-gray-600">
+                <p class="step-description">
                   Utilisez le formulaire de contact
                 </p>
               </div>
             </div>
 
             <!-- Étape 4 -->
-            <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+            <div class="step-card">
               <div class="text-center">
-                <div class="w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4 text-white" style="background-color: #82b864;">
+                <div class="step-number" style="background-color: #82b864;">
                   4
                 </div>
-                <svg class="w-12 h-12 mx-auto mb-4" style="color: #82b864;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="step-icon" style="color: #82b864;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
-                <h3 class="text-lg font-semibold mb-2" style="color: #384050;">
+                <h3 class="step-title" style="color: #384050;">
                   Réponse sous 48h
                 </h3>
-                <p class="text-sm text-gray-600">
+                <p class="step-description">
                   Réponse garantie sous 48h
                 </p>
               </div>
@@ -105,25 +107,24 @@ import { Artisan } from '../models/artisan.model';
       </section>
 
       <!-- Section Les artisans du mois -->
-      <section class="py-16 bg-white">
-        <div class="container">
-          
+      <section class="py-8 px-4 md:py-12 md:px-6 lg:py-16 bg-white">
+        <div class="container-custom">
+
           <!-- Titre -->
-          <div class="text-center mb-12">
-            <h2 class="text-xl md:text-4xl lg:text-5xl font-bold mb-6" style="color: #384050;">
+          <div class="text-center mb-8 md:mb-12">
+            <h2 class="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 md:mb-4 lg:mb-6 px-4" style="color: #384050;">
               Les artisans du mois
             </h2>
-            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto px-4">
               Découvrez nos artisans les mieux notés ce mois-ci
             </p>
           </div>
 
           <!-- Grid des artisans -->
-          <div class="grid grid-1 md:grid-2 lg:grid-3 gap-8">
+          <div class="artisans-grid">
             
-            <div *ngFor="let artisan of artisans" 
-                 class="rounded-xl p-6 hover:shadow-xl transition-all duration-300 cursor-pointer border hover:shadow-lg group"
-                 style="background-color: #f1f8fc;"
+            <div *ngFor="let artisan of artisans"
+                 class="artisan-card"
                  (click)="selectArtisan(artisan)">
               
               <div class="text-center">
@@ -166,15 +167,188 @@ import { Artisan } from '../models/artisan.model';
       </section>
     </div>
   `,
-  styles: []
+  styles: [`
+    /* Container personnalisé */
+    .container-custom {
+      max-width: 1280px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Grid des étapes - Mobile first */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Carte d'étape */
+    .step-card {
+      background-color: white;
+      border-radius: 1rem;
+      padding: 1.5rem 1rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .step-card:active {
+      transform: scale(0.98);
+    }
+
+    /* Numéro de l'étape */
+    .step-number {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin: 0 auto 1rem;
+      color: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Icône de l'étape */
+    .step-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      margin: 0 auto 1rem;
+    }
+
+    /* Titre de l'étape */
+    .step-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+    }
+
+    /* Description de l'étape */
+    .step-description {
+      font-size: 0.875rem;
+      color: #6b7280;
+      line-height: 1.5;
+    }
+
+    /* Grid des artisans - Mobile first */
+    .artisans-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    /* Carte artisan */
+    .artisan-card {
+      background-color: #f1f8fc;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .artisan-card:hover {
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+      border-color: #0074c7;
+      transform: translateY(-4px);
+    }
+
+    .artisan-card:active {
+      transform: translateY(-2px) scale(0.98);
+    }
+
+    /* Tablette (640px+) */
+    @media (min-width: 640px) {
+      .steps-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+
+      .step-card {
+        padding: 2rem 1.5rem;
+      }
+
+      .step-number {
+        width: 3.5rem;
+        height: 3.5rem;
+        font-size: 1.5rem;
+      }
+
+      .step-icon {
+        width: 3rem;
+        height: 3rem;
+      }
+
+      .step-title {
+        font-size: 1.25rem;
+      }
+
+      .step-description {
+        font-size: 1rem;
+      }
+    }
+
+    /* Tablette (768px+) */
+    @media (min-width: 768px) {
+      .artisans-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+      }
+
+      .artisan-card {
+        padding: 2rem;
+      }
+
+      .step-card:hover {
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        transform: translateY(-4px);
+        border-color: #0074c7;
+      }
+    }
+
+    /* Desktop (1024px+) */
+    @media (min-width: 1024px) {
+      .steps-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+        margin-bottom: 3rem;
+      }
+
+      .artisans-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .step-card {
+        padding: 2.5rem 2rem;
+      }
+    }
+
+    /* Large desktop (1280px+) */
+    @media (min-width: 1280px) {
+      .steps-grid {
+        gap: 2.5rem;
+      }
+
+      .artisans-grid {
+        gap: 2.5rem;
+      }
+    }
+  `]
 })
 export class HomeComponent implements OnInit {
-  
+
   // Données des artisans du mois
   artisans: Artisan[] = [];
+  private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
 
   constructor(
-    private artisansService: ArtisansService, 
+    private artisansService: ArtisansService,
     private router: Router,
     private titleService: Title,
     private metaService: Meta
@@ -272,11 +446,21 @@ export class HomeComponent implements OnInit {
   }
 
   private loadTopArtisans(): void {
-    this.artisansService.getArtisans().subscribe(artisans => {
-      // Prendre les 3 premiers artisans les mieux notés
-      this.artisans = artisans
-        .sort((a, b) => b.note - a.note)
-        .slice(0, 3);
+    this.artisansService.getArtisans().pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: (artisans) => {
+        // Prendre les 3 premiers artisans les mieux notés
+        this.artisans = artisans
+          .sort((a, b) => b.note - a.note)
+          .slice(0, 3);
+        this.cdr.markForCheck();
+      },
+      error: (error) => {
+        console.error('Erreur lors du chargement des artisans du mois:', error);
+        this.artisans = [];
+        this.cdr.markForCheck();
+      }
     });
   }
 
