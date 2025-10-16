@@ -18,11 +18,13 @@ import { Artisan } from '../models/artisan.model';
       
       <!-- Bouton retour -->
       <div class="container mb-6">
-        <button 
+        <button
+          type="button"
           (click)="goBack()"
           class="flex items-center px-4 py-3 bg-accent-green text-white rounded-lg hover:bg-green-600 transition-colors duration-200"
-          style="margin-left: 0; margin-right: auto; display: inline-flex;">
-          <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          style="margin-left: 0; margin-right: auto; display: inline-flex;"
+          aria-label="Retour à la liste des artisans">
+          <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
           </svg>
           Retour à la liste

@@ -23,7 +23,7 @@ import { ArtisansService } from '../services/artisans.service';
         <nav class="nav">
           
           <!-- Logo -->
-          <button (click)="navigateToHome()" class="logo-btn" aria-label="Retour à l'accueil">
+          <button type="button" (click)="navigateToHome()" class="logo-btn" aria-label="Retour à l'accueil">
             <img
               src="assets/images/logo.png"
               alt="Logo Trouve Ton Artisan"
@@ -33,6 +33,7 @@ import { ArtisansService } from '../services/artisans.service';
 
           <!-- Bouton menu mobile -->
           <button
+            type="button"
             (click)="toggleMobileMenu()"
             class="mobile-menu-btn"
             [attr.aria-label]="isMobileMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'"
@@ -42,10 +43,10 @@ import { ArtisansService } from '../services/artisans.service';
           </button>
 
           <!-- Barre de recherche -->
-          <div class="search-container">
+          <div class="search-container" role="search">
             <div class="search-input-wrapper">
               <input
-                type="text"
+                type="search"
                 placeholder="Rechercher un artisan..."
                 class="search-input"
                 [(ngModel)]="searchTerm"
@@ -53,6 +54,7 @@ import { ArtisansService } from '../services/artisans.service';
                 aria-label="Rechercher un artisan par nom, spécialité ou ville"
                 id="search-desktop">
               <button
+                type="button"
                 (click)="performSearch()"
                 class="search-btn"
                 aria-label="Lancer la recherche">
@@ -95,10 +97,10 @@ import { ArtisansService } from '../services/artisans.service';
         <!-- Menu mobile -->
         <div class="mobile-menu" [class.open]="isMobileMenuOpen">
           <!-- Recherche mobile -->
-          <div class="mobile-search">
+          <div class="mobile-search" role="search">
             <div class="search-input-wrapper">
               <input
-                type="text"
+                type="search"
                 placeholder="Rechercher un artisan..."
                 class="search-input"
                 [(ngModel)]="searchTerm"
@@ -106,6 +108,7 @@ import { ArtisansService } from '../services/artisans.service';
                 aria-label="Rechercher un artisan par nom, spécialité ou ville"
                 id="search-mobile">
               <button
+                type="button"
                 (click)="performSearch()"
                 class="search-btn"
                 aria-label="Lancer la recherche">
