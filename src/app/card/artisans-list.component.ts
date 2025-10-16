@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute, RouterModule, NavigationEnd } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { filter } from 'rxjs/operators';
 import { Artisan } from '../models/artisan.model';
 import { ArtisansService } from '../services/artisans.service';
 
@@ -33,55 +35,19 @@ import { ArtisansService } from '../services/artisans.service';
           </p>
 
           <!-- Barre de recherche mobile-first -->
-          <div class="mb-4 md:mb-6">
+          <div>
             <div class="search-input-wrapper">
-              <input 
+              <input
                 type="text"
                 [(ngModel)]="searchTerm"
                 (input)="filterArtisans()"
                 placeholder="Rechercher un artisan..."
                 class="search-input">
-              <button 
+              <button
                 class="search-btn">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- Filtres mobile-first avec scroll horizontal -->
-          <div class="overflow-x-auto pb-2">
-            <div class="flex space-x-3 min-w-max">
-              <button 
-                (click)="filterByCategory('all')"
-                [class.active]="selectedCategory === 'all'"
-                class="filter-btn touch-manipulation whitespace-nowrap">
-                Tous
-              </button>
-              <button 
-                (click)="filterByCategory('batiments')"
-                [class.active]="selectedCategory === 'batiments'"
-                class="filter-btn touch-manipulation whitespace-nowrap">
-                Bâtiments
-              </button>
-              <button 
-                (click)="filterByCategory('services')"
-                [class.active]="selectedCategory === 'services'"
-                class="filter-btn touch-manipulation whitespace-nowrap">
-                Services
-              </button>
-              <button 
-                (click)="filterByCategory('fabrication')"
-                [class.active]="selectedCategory === 'fabrication'"
-                class="filter-btn touch-manipulation whitespace-nowrap">
-                Fabrication
-              </button>
-              <button 
-                (click)="filterByCategory('alimentation')"
-                [class.active]="selectedCategory === 'alimentation'"
-                class="filter-btn touch-manipulation whitespace-nowrap">
-                Alimentation
               </button>
             </div>
           </div>
@@ -179,31 +145,6 @@ import { ArtisansService } from '../services/artisans.service';
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Filtres mobile-first */
-    .filter-btn {
-      padding: 0.5rem 1rem;
-      background-color: #f3f4f6;
-      color: var(--text-dark);
-      border: none;
-      border-radius: 9999px;
-      font-weight: 500;
-      font-size: 0.875rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      border: 1px solid transparent;
-    }
-
-    .filter-btn:active {
-      transform: scale(0.98);
-    }
-
-    .filter-btn.active {
-      background-color: var(--primary);
-      color: white;
-      border-color: var(--primary-dark);
-      font-weight: 600;
-    }
-
     /* Barre de recherche harmonisée avec le header */
     .search-input-wrapper {
       position: relative;
@@ -276,16 +217,6 @@ import { ArtisansService } from '../services/artisans.service';
 
     /* Hover effects - uniquement desktop */
     @media (min-width: 768px) {
-      .filter-btn:hover {
-        background-color: var(--primary-light);
-        transform: translateY(-1px);
-        border-color: var(--primary)/30;
-      }
-
-      .filter-btn.active:hover {
-        background-color: var(--primary-dark);
-      }
-
       .artisan-card:hover {
         transform: translateY(-4px);
         box-shadow: 0 20px 25px -5px rgba(0, 116, 199, 0.15);
@@ -319,12 +250,6 @@ import { ArtisansService } from '../services/artisans.service';
 
     /* Desktop improvements */
     @media (min-width: 1024px) {
-      /* Plus d'espacement sur desktop */
-      .filter-btn {
-        padding: 0.75rem 1.5rem;
-        font-size: 0.875rem;
-      }
-
       /* Animations plus fluides */
       .artisan-card {
         transition: all 0.3s ease;
@@ -374,21 +299,7 @@ import { ArtisansService } from '../services/artisans.service';
         background-color: #ffffff !important;
         color: #384050 !important;
       }
-      
-      .filter-btn {
-        background-color: #f3f4f6 !important;
-        color: #384050 !important;
-      }
-      
-      .filter-btn:hover {
-        background-color: var(--primary-light) !important;
-      }
-      
-      .filter-btn.active {
-        background-color: var(--primary) !important;
-        color: white !important;
-      }
-      
+
       input {
         background-color: var(--primary-light) !important;
         color: #384050 !important;
@@ -402,6 +313,7 @@ export class ArtisansListComponent implements OnInit {
   selectedCategory: string = 'all';
   filteredArtisans: Artisan[] = [];
   allArtisans: Artisan[] = [];
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private router: Router,
@@ -411,35 +323,44 @@ export class ArtisansListComponent implements OnInit {
 
   ngOnInit(): void {
     // Charger les données des artisans
-    this.artisansService.getArtisans().subscribe(artisans => {
-      this.allArtisans = artisans;
-      this.initializeFilters();
+    this.artisansService.getArtisans().pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: (artisans) => {
+        this.allArtisans = artisans;
+        this.initializeFilters();
+      },
+      error: (error) => {
+        console.error('Erreur lors du chargement des artisans:', error);
+        this.filteredArtisans = [];
+      }
     });
   }
 
   private initializeFilters(): void {
     // Écouter les changements de route pour détecter la catégorie
-    this.router.events.subscribe((event: any) => {
-      if (event instanceof NavigationEnd) {
-        const currentRoute = event.url.split('?')[0].replace('/', '');
-        
-        switch (currentRoute) {
-          case 'batiments':
-          case 'services':
-          case 'fabrication':
-          case 'alimentation':
-            this.selectedCategory = currentRoute;
-            break;
-          default:
-            this.selectedCategory = 'all';
-        }
-        this.filterArtisans();
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe((event) => {
+      const currentRoute = event.url.split('?')[0].replace('/', '');
+
+      switch (currentRoute) {
+        case 'batiments':
+        case 'services':
+        case 'fabrication':
+        case 'alimentation':
+          this.selectedCategory = currentRoute;
+          break;
+        default:
+          this.selectedCategory = 'all';
       }
+      this.filterArtisans();
     });
 
     // Détecter la catégorie initiale depuis l'URL
     const currentRoute = this.router.url.split('?')[0].replace('/', '');
-    
+
     switch (currentRoute) {
       case 'batiments':
       case 'services':
@@ -452,7 +373,9 @@ export class ArtisansListComponent implements OnInit {
     }
 
     // Récupérer les paramètres de recherche depuis l'URL
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(params => {
       if (params['search']) {
         this.searchTerm = params['search'];
       } else {

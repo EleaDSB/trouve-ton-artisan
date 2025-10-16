@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, DestroyRef, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ArtisansService } from '../services/artisans.service';
 import { EmailService } from '../services/email.service';
 import { Artisan } from '../models/artisan.model';
@@ -10,6 +11,7 @@ import { Artisan } from '../models/artisan.model';
 @Component({
   selector: 'app-artisan-details',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, RouterModule, ReactiveFormsModule, HttpClientModule],
   template: `
     <div class="min-h-screen bg-primary-light " style="padding-top: 30px;">
@@ -437,6 +439,8 @@ export class ArtisanDetailsComponent implements OnInit {
   contactMessage = '';
   contactMessageType: 'success' | 'error' = 'success';
   isSubmitting = false;
+  private destroyRef = inject(DestroyRef);
+  private cdr = inject(ChangeDetectorRef);
 
   constructor(
     private route: ActivatedRoute,
@@ -463,20 +467,25 @@ export class ArtisanDetailsComponent implements OnInit {
    */
   private loadArtisanDetails(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    
+
     if (!id) {
       this.isLoading = false;
+      this.cdr.markForCheck();
       return;
     }
 
-    this.artisansService.getArtisanById(parseInt(id, 10)).subscribe({
+    this.artisansService.getArtisanById(parseInt(id, 10)).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
       next: (artisan) => {
         this.artisan = artisan || null;
         this.isLoading = false;
+        this.cdr.markForCheck();
       },
       error: (error) => {
         console.error('Erreur lors du chargement de l\'artisan:', error);
         this.isLoading = false;
+        this.cdr.markForCheck();
       }
     });
   }
@@ -520,7 +529,9 @@ export class ArtisanDetailsComponent implements OnInit {
     };
 
     // Envoi via le service email
-    this.emailService.sendContactEmail(contactData).subscribe({
+    this.emailService.sendContactEmail(contactData).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
       next: (response) => {
         if (response.success) {
           this.contactMessage = response.message || 'Votre message a été envoyé avec succès ! L\'artisan vous répondra sous 48h.';
@@ -531,10 +542,12 @@ export class ArtisanDetailsComponent implements OnInit {
           this.contactMessageType = 'error';
         }
         this.isSubmitting = false;
+        this.cdr.markForCheck();
 
         // Masquer le message après 5 secondes
         setTimeout(() => {
           this.contactMessage = '';
+          this.cdr.markForCheck();
         }, 5000);
       },
       error: (error) => {
@@ -542,10 +555,12 @@ export class ArtisanDetailsComponent implements OnInit {
         this.contactMessage = error.error?.error || 'Une erreur est survenue lors de l\'envoi du message. Veuillez réessayer.';
         this.contactMessageType = 'error';
         this.isSubmitting = false;
+        this.cdr.markForCheck();
 
         // Masquer le message après 5 secondes
         setTimeout(() => {
           this.contactMessage = '';
+          this.cdr.markForCheck();
         }, 5000);
       }
     });

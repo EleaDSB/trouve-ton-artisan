@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -6,14 +6,15 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-footer',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     RouterModule,
   ],
   template: `
     <!-- Footer Mobile-First -->
-    <footer class="bg-primary-dark py-8 md:py-12 lg:py-16 mt-auto">
-      <div class="container">
+    <footer class="bg-primary-dark py-6 px-4 md:py-10 md:px-6 lg:py-14 mt-auto">
+      <div class="container-footer">
         
         <!-- Container 3 colonnes : Logo | Adresse | Informations légales -->
         <div class="footer-grid">
@@ -33,64 +34,58 @@ import { RouterModule } from '@angular/router';
           </div>
           
           <!-- Colonne 2 : Adresse -->
-          <div class="footer-column flex flex-col items-center">
-            <div class="flex items-center space-x-3 mb-4">
-              <svg class="w-5 h-5 text-primary-light flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="footer-column">
+            <div class="footer-column-header">
+              <svg class="footer-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
               </svg>
-              <h3 class="text-white font-semibold text-base">Notre Adresse</h3>
+              <h3 class="footer-title">Notre Adresse</h3>
             </div>
-            <div class="text-primary-light text-sm leading-relaxed space-y-1">
+            <address class="footer-address">
               <p>101 cours Charlemagne</p>
               <p>CS 200033</p>
               <p>69269 LYON CEDEX 02</p>
               <p>France</p>
-              <a href="tel:+33426734000" class="inline-flex items-center mt-3 text-white font-medium hover:text-primary-light transition-colors touch-manipulation">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <a href="tel:+33426734000" class="footer-phone" aria-label="Appeler le +33 4 26 73 40 00">
+                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                 </svg>
-                +33 (0)4 26 73 40 00
+                <span>+33 (0)4 26 73 40 00</span>
               </a>
-            </div>
+            </address>
           </div>
 
           <!-- Colonne 3 : Informations légales -->
-          <div class="footer-column flex flex-col items-end pr-6 md:pr-12">
-            <div class="flex items-center space-x-3 mb-4">
-              <svg class="w-5 h-5 text-primary-light flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="footer-column">
+            <div class="footer-column-header">
+              <svg class="footer-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
               </svg>
-              <h3 class="text-white font-semibold text-base">Informations Légales</h3>
+              <h3 class="footer-title">Informations Légales</h3>
             </div>
-            <div class="space-y-2">
-              <a routerLink="/mentions-legales" 
-                 class="block text-primary-light text-sm hover:text-white transition-colors duration-200 py-1 touch-manipulation">
+            <nav class="footer-links" aria-label="Liens légaux">
+              <a routerLink="/mentions-legales" class="footer-link">
                 Mentions Légales
               </a>
-              <a routerLink="/donnees-personnelles" 
-                 class="block text-primary-light text-sm hover:text-white transition-colors duration-200 py-1 touch-manipulation">
+              <a routerLink="/donnees-personnelles" class="footer-link">
                 Données personnelles
               </a>
-              <a routerLink="/accessibilite" 
-                 class="block text-primary-light text-sm hover:text-white transition-colors duration-200 py-1 touch-manipulation">
+              <a routerLink="/accessibilite" class="footer-link">
                 Accessibilité
               </a>
-              <a routerLink="/cookies" 
-                 class="block text-primary-light text-sm hover:text-white transition-colors duration-200 py-1 touch-manipulation">
+              <a routerLink="/cookies" class="footer-link">
                 Cookies
               </a>
-            </div>
+            </nav>
           </div>
         </div>
 
         <!-- Ligne de séparation -->
-        <div class="border-t border-primary/30 mt-6 pt-12 md:mt-12 md:pt-8">
-          <div class="text-center">
-            <p class="text-primary-light text-xs md:text-sm">
-              © {{ currentYear }} Trouve Ton Artisan - Tous droits réservés
-            </p>
-          </div>
+        <div class="footer-bottom">
+          <p class="footer-copyright">
+            © {{ currentYear }} Trouve Ton Artisan - Tous droits réservés
+          </p>
         </div>
       </div>
     </footer>
@@ -106,6 +101,13 @@ import { RouterModule } from '@angular/router';
       --text-dark: #384050;
     }
 
+    /* Container footer */
+    .container-footer {
+      max-width: 1280px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
     /* Classes utilitaires */
     .bg-primary-dark { background-color: var(--primary-dark); }
     .text-primary-light { color: var(--primary-light); }
@@ -114,26 +116,123 @@ import { RouterModule } from '@angular/router';
     .hover\\:text-primary-light:hover { color: var(--primary-light); }
     .hover\\:text-white:hover { color: white; }
 
-    /* Interactions tactiles mobile-first */
-    .touch-manipulation {
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: transparent;
+    /* Grid footer - Mobile first */
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      margin-bottom: 2rem;
     }
 
-    /* Mobile-first animations */
-    footer {
-      animation: slideInUp 0.6s ease-out;
+    /* Colonne du footer */
+    .footer-column {
+      text-align: center;
     }
 
-    @keyframes slideInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    /* En-tête de colonne */
+    .footer-column-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .footer-icon {
+      width: 1.25rem;
+      height: 1.25rem;
+      color: var(--primary-light);
+      flex-shrink: 0;
+    }
+
+    .footer-title {
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      margin: 0;
+    }
+
+    /* Adresse */
+    .footer-address {
+      color: var(--primary-light);
+      font-size: 0.875rem;
+      line-height: 1.75;
+      font-style: normal;
+    }
+
+    .footer-address p {
+      margin: 0.25rem 0;
+    }
+
+    .footer-phone {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      color: white;
+      font-weight: 500;
+      font-size: 0.9375rem;
+      padding: 0.75rem 1rem;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 0.5rem;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      min-height: 44px;
+    }
+
+    .footer-phone:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+      color: var(--primary-light);
+      transform: translateY(-2px);
+    }
+
+    .footer-phone:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    /* Liens légaux */
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .footer-link {
+      color: var(--primary-light);
+      font-size: 0.9375rem;
+      text-decoration: none;
+      padding: 0.625rem 1rem;
+      transition: all 0.2s ease;
+      border-radius: 0.375rem;
+      display: inline-block;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+    }
+
+    .footer-link:hover {
+      color: white;
+      background-color: rgba(255, 255, 255, 0.1);
+      transform: translateX(4px);
+    }
+
+    .footer-link:active {
+      transform: translateX(2px) scale(0.98);
+    }
+
+    /* Bas du footer */
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      text-align: center;
+    }
+
+    .footer-copyright {
+      color: var(--primary-light);
+      font-size: 0.8125rem;
+      margin: 0;
     }
 
     /* Logo mobile-first */
@@ -146,94 +245,94 @@ import { RouterModule } from '@angular/router';
       transform: scale(0.95);
     }
 
-    /* Liens mobile-first */
-    a {
-      text-decoration: none;
-      position: relative;
+    /* Tablette (640px+) */
+    @media (min-width: 640px) {
+      .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+      }
+
+      .footer-title {
+        font-size: 1.0625rem;
+      }
+
+      .footer-address {
+        font-size: 0.9375rem;
+      }
+
+      .footer-link {
+        font-size: 1rem;
+      }
+
+      .footer-copyright {
+        font-size: 0.875rem;
+      }
     }
 
-    a:active {
-      transform: translateY(1px);
-    }
-
-    /* Responsive - Desktop improvements */
+    /* Tablette (768px+) */
     @media (min-width: 768px) {
+      .footer-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2.5rem;
+        align-items: start;
+      }
+
+      .footer-column {
+        text-align: left;
+      }
+
+      .footer-column-header {
+        justify-content: flex-start;
+      }
+
+      .footer-links {
+        align-items: flex-start;
+      }
+
+      .footer-bottom {
+        margin-top: 3rem;
+        padding-top: 2rem;
+      }
+
       img:hover {
         transform: scale(1.05);
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
-      }
-
-      /* Hover effects pour les liens */
-      a:hover {
-        text-decoration: none;
-      }
-
-      /* Animation des éléments */
-      a::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 0;
-        height: 1px;
-        background-color: var(--primary-light);
-        transition: width 0.3s ease;
-      }
-
-      a:hover::after {
-        width: 100%;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
       }
     }
 
-    /* Large screens optimizations */
+    /* Desktop (1024px+) */
     @media (min-width: 1024px) {
-      /* Plus d'espacement sur desktop */
-      .space-y-8 > * + * {
-        margin-top: 0;
+      .footer-grid {
+        gap: 3rem;
       }
 
-      /* Meilleure organisation */
-      footer {
-        animation-delay: 0.2s;
+      .footer-icon {
+        width: 1.375rem;
+        height: 1.375rem;
+      }
+
+      .footer-title {
+        font-size: 1.125rem;
+      }
+
+      .footer-phone {
+        padding: 0.875rem 1.25rem;
+      }
+    }
+
+    /* Large desktop (1280px+) */
+    @media (min-width: 1280px) {
+      .footer-grid {
+        gap: 4rem;
       }
     }
 
     /* Accessibilité */
     a:focus,
+    button:focus,
     img:focus {
       outline: 2px solid var(--primary-light);
       outline-offset: 2px;
-    }
-
-    /* Layout Grid Footer */
-    .footer-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-    }
-
-    .footer-column {
-      text-align: center;
-    }
-
-    @media (min-width: 768px) {
-      .footer-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 3rem;
-        align-items: start;
-      }
-      
-      .footer-column {
-        text-align: left;
-      }
-    }
-
-    /* Performance */
-    * {
-      transition-property: color, background-color, border-color, opacity, transform;
-      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-      transition-duration: 200ms;
     }
 
     /* Réduction de mouvement */
@@ -241,21 +340,6 @@ import { RouterModule } from '@angular/router';
       * {
         animation: none !important;
         transition: none !important;
-      }
-    }
-
-    /* Mode sombre */
-    @media (prefers-color-scheme: dark) {
-      footer {
-        background-color: #111827;
-      }
-      
-      .text-primary-light {
-        color: #e5e7eb;
-      }
-      
-      .border-primary {
-        border-color: #374151;
       }
     }
   `]
